@@ -48,6 +48,11 @@ end
 
 gem 'devise'
 gem 'devise_token_auth'
+
 gem 'dotenv-rails'
+
+gem 'whenever', require: false
+
+gem "activestorage-aliyun"
 
 

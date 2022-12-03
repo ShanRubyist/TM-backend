@@ -51,8 +51,10 @@ gem 'devise_token_auth'
 
 gem 'dotenv-rails'
 
+gem "activestorage-aliyun"
+
 gem 'whenever', require: false
 
-gem "activestorage-aliyun"
+gem 'sidekiq'
 
 

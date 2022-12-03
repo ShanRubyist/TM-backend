@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source "http://gems.ruby-china.com"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "2.7.6"
@@ -45,4 +45,9 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
+
+gem 'devise'
+gem 'devise_token_auth'
+gem 'dotenv-rails'
+
 

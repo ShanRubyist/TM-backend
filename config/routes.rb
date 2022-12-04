@@ -11,9 +11,14 @@ Rails.application.routes.draw do
   #   mount Sidekiq::Web => '/sidekiq'
   # end
 
-  namespace :api, path: nil do
+  namespace :api do
     namespace :v1 do
       # match "*path", to: "api#gone", via: :all
+      resources :websites do
+        member do
+          get 'screenshots' => 'websites#screenshots', as: 'screenshots'
+        end
+      end
     end
   end
 end

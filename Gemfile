@@ -3,6 +3,18 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # ruby "2.7.6"
 
+# headless chromium
+#
+# Download it from official source for Chrome or Chromium.
+# Chrome binary should be in the PATH or BROWSER_PATH
+# See https://github.com/rubycdp/ferrum
+#
+# Also need fonts-noto-cjk
+#     # apt-get install chromium fonts-noto-cjk
+#     # fonts-noto-cjk 是中、日、韩字体。没有安装时ferrum截屏的字体会丢失，显示方框
+# 不知道为什么这个需要放在前面，否则有些环境会运行出错
+gem "ferrum"
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4"
 
@@ -59,13 +71,3 @@ gem 'whenever', require: false
 
 gem 'sidekiq'
 
-# headless chromium
-#
-# Download it from official source for Chrome or Chromium.
-# Chrome binary should be in the PATH or BROWSER_PATH
-# See https://github.com/rubycdp/ferrum
-#
-# Also need fonts-noto-cjk
-#     # apt-get install chromium fonts-noto-cjk
-#     # fonts-noto-cjk 是中、日、韩字体。没有安装时ferrum截屏的字体会丢失，显示方框
-gem "ferrum"

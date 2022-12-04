@@ -1,7 +1,18 @@
+require 'screenshot'
+
 class WebsiteScreenshotJob
   include Sidekiq::Job
 
   def perform(*args)
-    # Do something
+    Website.all.each do |website|
+      img = website_screenshot(website.url)
+      upload_screenshot_to_oss(website, img, filename(website.url))
+    end
+  end
+
+  private
+
+  def upload_screenshot_to_oss(website, screenshot, oss_filename = Time.now.to_s)
+    website.screenshots.attach(io: File.open(screenshot), filename: oss_filename)
   end
 end

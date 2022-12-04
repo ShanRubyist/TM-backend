@@ -59,4 +59,13 @@ gem 'whenever', require: false
 
 gem 'sidekiq'
 
-
+# headless chromium
+#
+# Download it from official source for Chrome or Chromium.
+# Chrome binary should be in the PATH or BROWSER_PATH
+# See https://github.com/rubycdp/ferrum
+#
+# Also need fonts-noto-cjk
+#     # apt-get install chromium fonts-noto-cjk
+#     # fonts-noto-cjk 是中、日、韩字体。没有安装时ferrum截屏的字体会丢失，显示方框
+gem "ferrum"

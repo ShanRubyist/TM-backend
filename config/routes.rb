@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   # root "users/sessions#new"
   #
 
+  # require 'sidekiq/web'
+  # authenticate :user, lambda { |u| u.admin? } do
+  #   mount Sidekiq::Web => '/sidekiq'
+  # end
 
   namespace :api, path: nil do
     namespace :v1 do

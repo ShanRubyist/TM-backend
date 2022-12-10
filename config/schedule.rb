@@ -23,5 +23,5 @@ env :PATH, ENV['PATH']
 set :output, 'log/whenever.log'
 
 every 1.day, at: ['8:00 am'] do
-  runner "WebsiteScreenshotJob.perform_async", environment: :development
+  runner "WebsiteScreenshotJob.perform_later", environment: :development
 end

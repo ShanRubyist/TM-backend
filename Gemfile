@@ -69,5 +69,5 @@ gem "activestorage-aliyun"
 
 gem 'whenever', require: false
 
-gem 'sidekiq'
+gem 'sidekiq', '< 6.0'
 

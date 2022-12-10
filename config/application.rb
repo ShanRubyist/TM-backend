@@ -25,5 +25,7 @@ module TMBackend
     config.api_only = true
 
     config.hosts << ENV.fetch('HOST') { 'localhost' }
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end

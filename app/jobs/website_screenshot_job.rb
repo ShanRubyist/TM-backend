@@ -1,7 +1,7 @@
 require 'screenshot'
 
-class WebsiteScreenshotJob
-  include Sidekiq::Job
+class WebsiteScreenshotJob < ApplicationJob
+  queue_as :default
 
   def perform(*args)
     Website.all.each do |website|

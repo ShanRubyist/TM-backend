@@ -6,9 +6,9 @@ Rails.application.routes.draw do
   # root "users/sessions#new"
   #
 
-  # require 'sidekiq/web'
+  require 'sidekiq/web'
   # authenticate :user, lambda { |u| u.admin? } do
-  #   mount Sidekiq::Web => '/sidekiq'
+    mount Sidekiq::Web => '/sidekiq'
   # end
 
   namespace :api do

@@ -25,7 +25,10 @@ module TMBackend
     config.api_only = true
 
     config.hosts << ENV.fetch('HOST') { 'localhost' }
+    config.hosts << ENV.fetch('CDN_HOST') {}
 
     config.active_job.queue_adapter = :sidekiq
+
+    config.middleware.use ActionDispatch::Flash
   end
 end

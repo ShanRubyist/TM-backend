@@ -27,9 +27,9 @@ class Api::V1::WebsitesController < ApplicationController
   end
 
   def destroy
-    fail unless params[:website_id]
+    fail unless params[:id]
 
-    website = current_user.websites.find_by(id: params[:website_id])
+    website = current_user.websites.find_by(id: params[:id])
 
     if website && website.destroy!
       render json: {
@@ -43,17 +43,18 @@ class Api::V1::WebsitesController < ApplicationController
   end
 
   def screenshots
-    fail unless params[:website_id]
+    fail unless params[:id]
 
-    website = current_user.websites.find_by(id: params[:website_id])
+    website = current_user.websites.find_by(id: params[:id])
 
     if website
       render json: {
         data: {
           website: website,
           screenshots: website.screenshots.map do |screenshot|
-            url_for screenshot
+            # url_for screenshot
             # rails_storage_proxy_url screenshot
+            cdn_url screenshot
           end
         }
       }
@@ -63,6 +64,15 @@ class Api::V1::WebsitesController < ApplicationController
   end
 
   private
+
+  def cdn_url(screenshot)
+    host = ENV.fetch('HOST') { '127.0.0.1' }
+    cdn_host = ENV.fetch('CDN_HOST') {}
+
+    uri = URI(rails_storage_proxy_url(screenshot))
+    uri.host.sub!(host, cdn_host) if cdn_host
+    uri.to_s
+  end
 
   def render_404
     render json: {

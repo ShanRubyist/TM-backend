@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   # end
 
+  # 跨域预检请求
+  match '*all', controller: 'application', action: 'cors_preflight_check', via: [:options]
+
   namespace :api do
     namespace :v1 do
       # match "*path", to: "api#gone", via: :all

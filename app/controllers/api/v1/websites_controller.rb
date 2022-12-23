@@ -58,7 +58,7 @@ class Api::V1::WebsitesController < ApplicationController
             website
               .screenshots
               .offset(params[:per] * (params[:page] - 1))
-              .limit(params[:page])
+              .limit(params[:per])
               .order("created_at desc")
               .map do |screenshot|
               {

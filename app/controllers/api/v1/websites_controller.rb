@@ -45,17 +45,29 @@ class Api::V1::WebsitesController < ApplicationController
   def screenshots
     fail unless params[:id]
 
+    params[:per] ||= 20
+    params[:page] ||= 1
+
     website = current_user.websites.find_by(id: params[:id])
 
     if website
       render json: {
         data: {
           website: website,
-          screenshots: website.screenshots.map do |screenshot|
-            # url_for screenshot
-            # rails_storage_proxy_url screenshot
-            cdn_url screenshot
-          end
+          screenshots:
+            website
+              .screenshots
+              .offset(params[:per] * (params[:page] - 1))
+              .limit(params[:page])
+              .order("created_at desc")
+              .map do |screenshot|
+              {
+                # url_for screenshot
+                # rails_storage_proxy_url screenshot
+                img: cdn_url(screenshot),
+                created_at: screenshot.created_at.localtime.strftime("%Y-%m-%d %H:%M:%S")
+              }
+            end
         }
       }
     else
@@ -66,11 +78,10 @@ class Api::V1::WebsitesController < ApplicationController
   private
 
   def cdn_url(screenshot)
-    host = ENV.fetch('HOST') { '127.0.0.1' }
     cdn_host = ENV.fetch('CDN_HOST') {}
 
     uri = URI(rails_storage_proxy_url(screenshot))
-    uri.host.sub!(host, cdn_host) if cdn_host
+    uri.host = cdn_host if cdn_host && cdn_host.present?
     uri.to_s
   end
 

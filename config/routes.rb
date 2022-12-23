@@ -22,6 +22,8 @@ Rails.application.routes.draw do
           get 'screenshots' => 'websites#screenshots', as: 'screenshots'
         end
       end
+
+      get 'info' => 'info#info', as: 'info'
     end
   end
 end

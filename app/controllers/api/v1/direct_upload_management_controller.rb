@@ -3,6 +3,7 @@ class Api::V1::DirectUploadManagementController < ApplicationController
 
   def before_direct_upload
     fail unless params[:record_id]
+    fail unless params[:checksum]
 
     access_key_secret = ENV['ALIOSS_KEY_SECRET']
     access_key_id = ENV['ALIOSS_KEY_ID']
@@ -32,8 +33,7 @@ class Api::V1::DirectUploadManagementController < ApplicationController
 
     callback_dict = {}
     callback_dict['callbackBodyType'] = 'application/x-www-form-urlencoded'
-    callback_dict['callbackBody'] =
-      'filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}&x:record_id=' + params[:record_id].to_s
+    callback_dict['callbackBody'] = 'filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}&x:record_id=' + params[:record_id].to_s + '&x:checksum=' + params[:checksum]
     callback_dict['callbackUrl'] = callback_url
     callback_param = callback_dict.to_json
     base64_callback_body = Base64.strict_encode64(callback_param)
@@ -53,27 +53,27 @@ class Api::V1::DirectUploadManagementController < ApplicationController
   end
 
   def upload_callback
-
-    render json: {a: ENV['ALIOSS_PEM']}
-  end
-  def upload_callback2
     render json: { mesg: 'invalid signature' }, status: 500 unless check_signature
 
     blob = ActiveStorage::Blob.create!(filename: params[:filename],
                                        key: params[:filename],
                                        byte_size: params[:size],
-                                       checksum: params[:checksum],
-                                       content_type: params[:mineType],
+                                       checksum: params['x:checksum'.to_sym],
+                                       content_type: params[:mimeType],
                                        service_name: 'aliyun')
 
     attatchments = ActiveStorage::Attachment.create!(
       name: 'screenshots',
       record_type: 'Website',
-      record_id: params['x:record_id'],
+      record_id: params['x:record_id'.to_sym],
       blob_id: blob.id
     )
 
-    render json: { mesg: 'upload success' }, status: 200
+    if blob && attatchments
+      render json: { mesg: 'upload success' }, status: 200
+    else
+      render json: { mesg: 'save failed' }, status: 500
+    end
   end
 
   private
@@ -81,10 +81,10 @@ class Api::V1::DirectUploadManagementController < ApplicationController
   def check_signature
     # pub_key_url = urlopen(Base64.decode64(request.headers['x-oss-pub-key-url']))
     pub_key = <<~DOC
-        -----BEGIN PUBLIC KEY-----
-        MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKs/JBGzwUB2aVht4crBx3oIPBLNsjGs
-        C0fTXv+nvlmklvkcolvpvXLTjaxUHR3W9LXxQ2EHXAJfCB+6H2YF1k8CAwEAAQ==
-        -----END PUBLIC KEY-----
+      -----BEGIN PUBLIC KEY-----
+      MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKs/JBGzwUB2aVht4crBx3oIPBLNsjGs
+      C0fTXv+nvlmklvkcolvpvXLTjaxUHR3W9LXxQ2EHXAJfCB+6H2YF1k8CAwEAAQ==
+      -----END PUBLIC KEY-----
     DOC
 
     rsa = OpenSSL::PKey::RSA.new(pub_key)

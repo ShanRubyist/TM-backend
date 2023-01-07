@@ -11,7 +11,7 @@ aliyun:
   access_key_id: <%= ENV.fetch('ALIOSS_KEY_ID') %>
   access_key_secret: <%= ENV.fetch('ALIOSS_KEY_SECRET') %>
   endpoint: <%= ENV.fetch('ALIOSS_ENDPOINT') %>
-  bucket: <%= ENV.fetch('ALIOSS_BUCKET') + '-' + Rails.env %>
+  bucket: <%= ENV.fetch('ALIOSS_PREFIX') + '-' + Rails.env %>
   # path prefix, default: /
   path: "TM"
   # Bucket public: true/false, default: true, for generate public/private URL.

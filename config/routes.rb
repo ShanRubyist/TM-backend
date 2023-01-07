@@ -24,6 +24,9 @@ Rails.application.routes.draw do
       end
 
       get 'info' => 'info#info', as: 'info'
+
+      get 'before_direct_upload' => 'direct_upload_management#before_direct_upload'
+      post 'upload_callback' => 'direct_upload_management#upload_callback'
     end
   end
 end

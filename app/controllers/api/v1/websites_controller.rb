@@ -6,7 +6,7 @@ class Api::V1::WebsitesController < ApplicationController
 
     render json: {
       data: {
-        websites: websites.map(&:to_json)
+        websites: websites.map
       }
     }
   end

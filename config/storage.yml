@@ -13,7 +13,7 @@ aliyun:
   endpoint: <%= ENV.fetch('ALIOSS_ENDPOINT') %>
   bucket: <%= ENV.fetch('ALIOSS_PREFIX') + '-' + Rails.env %>
   # path prefix, default: /
-  path: "TM"
+  path: <%= ENV.fetch('ALIOSS_PATH') %>
   # Bucket public: true/false, default: true, for generate public/private URL.
   public: false
   # Enable cname to use custom domain

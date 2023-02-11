@@ -55,8 +55,9 @@ class Api::V1::DirectUploadManagementController < ApplicationController
   def upload_callback
     render json: { mesg: 'invalid signature' }, status: 500 unless check_signature
 
-    blob = ActiveStorage::Blob.create!(filename: params[:filename],
-                                       key: params[:filename],
+    filename = params[:filename].sub(ENV['ALIOSS_PATH'], '')
+    blob = ActiveStorage::Blob.create!(filename: filename,
+                                       key: filename,
                                        byte_size: params[:size],
                                        checksum: params['x:checksum'.to_sym],
                                        content_type: params[:mimeType],

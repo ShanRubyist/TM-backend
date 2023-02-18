@@ -9,9 +9,8 @@ class Api::V1::DirectUploadManagementController < ApplicationController
     access_key_id = ENV['ALIOSS_KEY_ID']
     host = "https://#{ENV['ALIOSS_PREFIX']}-#{Rails.env}.#{ENV['ALIOSS_ENDPOINT']}"
     expire_syncpoint = Time.now.to_i + 1.minutes
-    # expire_syncpoint = Time.now.to_i + 1.minutes
     callback_url = "https://#{ENV['HOST']}/api/v1/upload_callback"
-    upload_dir = "TM"
+    upload_dir = ENV['ALIOSS_PATH']
 
     expire = Time.at(expire_syncpoint).utc.iso8601()
     response.headers['expire'] = expire

@@ -7,7 +7,7 @@ class Api::V1::DirectUploadManagementController < ApplicationController
 
     access_key_secret = ENV['ALIOSS_KEY_SECRET']
     access_key_id = ENV['ALIOSS_KEY_ID']
-    host = "https://#{ENV['ALIOSS_PREFIX']}-#{Rails.env}.#{ENV['ALIOSS_ENDPOINT']}"
+    host = "https://#{ENV['ALIOSS_BUCKET']}.#{ENV['ALIOSS_ENDPOINT']}"
     expire_syncpoint = Time.now.to_i + 1.minutes
     callback_url = "https://#{ENV['HOST']}/api/v1/upload_callback"
     upload_dir = ENV['ALIOSS_PATH']

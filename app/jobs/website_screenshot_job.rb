@@ -5,8 +5,8 @@ class WebsiteScreenshotJob < ApplicationJob
 
   def perform(*args)
     Website.all.each do |website|
-      img = website_screenshot(website.url)
-      upload_screenshot_to_oss(website, img, filename(website.url))
+      img = website_screenshot(website.url) rescue Rails.logger.error('#{website.url} screenshot failed')
+      upload_screenshot_to_oss(website, img, filename(website.url)) rescue Rails.logger.error('#{website.url} upload screenshot to oss failed')
     end
   end
 

@@ -10,7 +10,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # See https://github.com/rubycdp/ferrum
 #
 # Also need fonts-noto-cjk
-#     # apt-get install chromium fonts-noto-cjk
+#     # apt-get install chromium-browser fonts-noto-cjk
 #     # fonts-noto-cjk 是中、日、韩字体。没有安装时ferrum截屏的字体会丢失，显示方框
 # 不知道为什么这个需要放在前面，否则有些环境会运行出错
 gem "ferrum"
